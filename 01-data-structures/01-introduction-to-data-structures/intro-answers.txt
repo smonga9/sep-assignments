@@ -1,0 +1,22 @@
+Question #1 - How does your data structure allow developers to access and manipulate the data?
+
+Line:
+1. When appending a new member to the array, each element is iterated through to find a match for a particular member of the array. When removing a member and setting it to empty or nil causes the line to be shorter.
+
+Pixel
+1. When using x and y and removing a pixel refers to the position directly within the array. Removing a pixel is more of a reset of the position with nil.
+
+
+Question #2 - If a developer wanted to find a specific element in your data structure, how would you search for it?
+
+Line:
+1. When searching for an element, one must iterate over each element until there is a match.
+
+Pixel:
+1. Searching for a pixel using the x and y by accessing the element indices within the 2D array.
+
+Question #3 - What other real-world data can each structure represent?
+
+Line & Pixel:
+
+1. Moves in a chess game or a social network feed where things are added/removed randomly and specifically searched.
