@@ -1,30 +1,32 @@
 class MyQueue
   attr_accessor :head
   attr_accessor :tail
-  attr_accessor :queue
 
   def initialize
     @queue = Array.new
     @head = @queue[0]
-    @tail = @queue[-1]
   end
 
   def enqueue(element)
-    @queue << element
-    @head = @queue[0]
-    @tail = @queue[-1]
+    @queue += [element]
+    @head = @queue.first
+    @tail = @queue.last
   end
 
   def dequeue
-    first_person = @queue.delete_at(0)
-    return first_person
+    temp = @queue.first
+    @queue.delete_at(0)
+    @head = @queue.first
+    @tail = @queue.last
+
+    return temp
   end
 
   def empty?
-    if @queue.length === 0
-      return true
+    if @head == nil
+      true
     else
-      return false
+      false
     end
   end
 end
