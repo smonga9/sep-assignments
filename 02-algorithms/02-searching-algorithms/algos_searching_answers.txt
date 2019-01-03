@@ -1,0 +1,8 @@
+1. Seven using Linear search.
+2. Three steps using binary search.
+3.
+  fib(10) = 0 + 1 + (1+0) + (1+1) + (2+1) + (2+3) + (3+5) + (5+8) + (8+13) + (13+21) + (21+34) => 55
+  fib(11) = 0..(34+55) => 89
+  fib(12) = 0..(55+89) => 144
+4. I would use the linear search with an iterative solution to go through each data point as there would be ability to narrow down the search field as it's unsorted and the data could be in any part of the collection.
+5. I would use binary recursive search for a sorted algorithm because it would ensure that the item was found in the least amount of steps by eliminating a large amount of unneeded searching by comparing the data that's been searched for against the mid point and then narrowing the search field.
