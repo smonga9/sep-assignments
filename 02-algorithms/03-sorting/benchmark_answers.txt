@@ -1,0 +1,6 @@
+user        system      total        real
+bucket sort    0.000000   0.000000   0.000000 (  0.000209)
+heap sort      0.000000   0.000000   0.000000 (  0.000095)
+quick sort     0.000000   0.000000   0.000000 (  0.000174)
+
+I expect that the more you pre-organize the data into various categories prior to sorting it the longer it takes because it's an intermediary step that takes time. Whereas a method that purely sorts the data gets to the point and simply sorts the data w/ no pre-run organizational work.
