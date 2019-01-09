@@ -1,0 +1,16 @@
+1. An algorithm that has O(1) is like a speedboat and an algorithm with O(2^n) is like a paddle boat.
+2. In Binary search the best case scenario is that it finds the item on the first attempt. It would either find that the list was one item long or that the item was exactly in the mid point of the list.
+3. In Binary search, the worst case scenario is then that the algorithm continues to look until it eventually finds what it is looking for on the last run through.
+4. The bounded case scenario for Binary search is the same as the worst case scenario as it has to continuously run and both make the comparison and pare down the data to continue looking until it finds the data it is looking for.
+5. https://docs.google.com/spreadsheets/d/1tPCOTvg7glItkFklEUGty6Y6x8u6hpmTmFMhvZteNLs/edit?usp=sharing
+6. Infinity
+7. 2N based on the fact that each increase in x results in a doubling of the Y.
+8. def searcher(array)
+    array.each_with_index do |value, index|
+      puts "x: index, y: value"
+    end
+  end
+9. See Answer 5
+10. 0(n)
+11. 0(1)
+12. 0(log n)
