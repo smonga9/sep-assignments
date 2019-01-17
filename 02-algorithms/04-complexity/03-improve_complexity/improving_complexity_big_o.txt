@@ -1,0 +1,19 @@
+Benchmark test
+                                          user     system      total        real
+Poorly written ruby code              0.016000   0.000000   0.016000 (  0.013526)
+Improving complexity version one      0.015000   0.000000   0.015000 (  0.012842)
+Improving complexity version two      0.016000   0.000000   0.016000 (  0.013358)
+Improving complexity version three    0.015000   0.000000   0.015000 (  0.007893)
+
+poorly_written_ruby.rb has an O(n^2) notation,
+	worst-case scenario for the unsorted array and
+	the while loop are O(n)
+
+The version one code optimization shows a varied difference
+	in runtime, the Big-O notation remains at O(n^2)
+
+The version two changes still has a Big-O notation of O(n^2)
+	 with an improved runtime
+
+The new Heap sort algorithm has degraded Big-O notation to
+	O(n log n) but has greatly improved the runtime
