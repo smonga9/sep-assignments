@@ -1,0 +1,5 @@
+CREATE TABLE comment(id INTEGER PRIMARY KEY, body TEXT, post_id INTEGER NOT NULL, user_id INTEGER, FOREIGN KEY(post_id)R
+
+CREATE TABLE post(id INTEGER PRIMARY KEY, title TEXT, body TEXT, user_id INTEGER)
+
+CREATE TABLE user(id INTGER PRIMARY KEY, full_name TEXT, email TEXT)
