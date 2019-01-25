@@ -1,0 +1,81 @@
+Exercises
+Submit your answers in the submission tab for review.
+*******************************************************************************
+1. What's a RubyGem and why would you use one?
+
+RubyGem is a software used to download, install and use ruby software packages on a system.
+The software package is called a "gem" and it contains a packaged Ruby application or library.
+Much like the #include directives used in the C programming language.
+
+*******************************************************************************
+2. What's the difference between lazy and eager loading?
+
+Lazy loading is when you perform the work when required and eager loading
+is performing the work during initialization.
+
+*******************************************************************************
+3. What's the difference between the CREATE TABLE and INSERT INTO SQL
+statements?
+
+*******************************************************************************
+3. What's the difference between the CREATE TABLE and INSERT INTO SQL
+statements?
+
+  You can not INSERT INTO a table that does not exist.  Use CREATE TABLE to
+  first establish the table.
+
+*******************************************************************************
+4. What's the difference between extend and include? When would you use one
+or the other?
+
+  Include is used when the methods are used to save changes, extend will only
+  allow us to add class methods from a module.
+
+*******************************************************************************
+5. In persistence.rb, why do the save methods need to be instance (vs. class)
+methods?
+
+  The save method is a manipulation  and instance methods are used for
+  manipulating or accessing one particular object.
+
+*******************************************************************************
+6. Given the Jar-Jar Binks example earlier, what is the final SQL query in
+persistence.rb's save! method?
+
+  UPDATE character
+  SET character_name = 'Jar-Jar Binks', star_rating = 1
+  WHERE id = 1;
+
+*******************************************************************************
+7. AddressBook's entries instance variable no longer returns anything. We'll
+fix this in a later checkpoint. What changes will we need to make?
+
+  Update AddressBloc to use BlocRecord .where methods. This will allow us
+  to express a relationship between an address book and its entries.
+
+*******************************************************************************
+*******************************************************************************
+Programming Questions
+1. Write a Ruby method that converts snake_case to CamelCase using regular
+expressions (you can test them on Rubular). Send your code in the submission
+tab.
+
+  def camelcase(sc)
+    sc.capitalize!
+    sc.gsub!(/_[a-z]/) {|s| s.upcase}
+    sc.gsub(/_/, '')
+  end
+
+*******************************************************************************
+2. Add a select method which takes an attribute and value and searches for
+all records that match:
+
+  def find_by(attribute, value)
+    row = connection.get_first_row <<-SQL
+      SELECT #{columns.join ","} FROM #{table}
+      -- WHERE attribute = #{attribute} AND value = #{value}
+      WHERE #{attributes} = #{BlocRecord::Utility.sql_strings(value)};
+    SQL
+
+    rows_to_array(rows)
+  end
