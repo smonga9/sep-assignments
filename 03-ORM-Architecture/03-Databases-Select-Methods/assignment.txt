@@ -1,0 +1,147 @@
+Exercises
+*******************************************************************************
+1. BlocRecord optimistically assumes only perfect user input, which means our
+selection methods will fail if users pass us something we don't expect
+(like -1 for id, or a string for num_records). Add input validation, errors,
+and error handling to BlocRecord.
+
+  Modify address-bloc/controllers/menu_controller.rb
+    def create_entry
+      system "clear"
+      puts "New AddressBloc Entry"
+      print "Name: "
+      name = gets.chomp
+      while !(name =~ /\A[a-zA-Z\s]*\z/)
+        puts "\nName can only be letters, no special characters.\n"
+        print "Name: "
+        name = gets.chomp
+      end
+
+      print "Phone number: "
+      phone = gets.chomp
+      while !(phone =~ /\A(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}\z/)
+        puts "\nThe phone number needs to follow one of these formats..\n"
+        puts "111 222 3333, (111) 222-3333, 111.222.3333, 111 222 3333\n"
+        print "Please re-enter your phone number: "
+        phone = gets.chomp
+      end
+
+      print "Email: "
+      email = gets.chomp
+      while !(email =~ /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i)
+        puts "The email address must follow this format...\n"
+        puts "abc@def.com, xyz@abc.org etc\n"
+        print "Please re-enter your email address: "
+        email = gets.chomp
+      end
+
+      address_book.add_entry(name, phone, email)
+
+      system "clear"
+      puts "New entry created"
+    end
+
+  def edit_entry(entry)
+    print "Updated name: "
+    name = gets.chomp
+    while !(name =~ /\A[a-zA-Z\s]*\z/)
+      puts "\nName can only be letters, no special characters.\n"
+      print "Updated name: "
+      name = gets.chomp
+    end
+
+    print "Updated phone number: "
+    phone_number = gets.chomp
+    while !(phone_number =~ /\A(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}\z/)
+      puts "\nThe phone number needs to follow one of these formats..\n"
+      puts "111 222 3333, (111) 222-3333, 111.222.3333, 111 222 3333\n"
+      print "Updated phone number: "
+      phone_number = gets.chomp
+    end
+
+    print "Updated email: "
+    email = gets.chomp
+    while !(email =~ /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i)
+      puts "The email address must follow this format...\n"
+      puts "abc@def.com, xyz@abc.org etc\n"
+      print "Updated email: "
+      email = gets.chomp
+    end
+
+    entry.name = name if !name.empty?
+    entry.phone_number = phone_number if !phone_number.empty?
+    entry.email = email if !email.empty?
+
+    system "clear"
+    puts "Updated entry:"
+    puts entry
+  end
+
+*******************************************************************************
+2. Using method_missing, add support for dynamic find_by_* method calls,
+where * is the name of any attribute on the model.
+If you implement this correctly, calls like
+  Entry.find_by_name("Jerome") and
+  Entry.find_by_phone_number("123-456-7890")
+will have identical results to
+  Entry.find_by(:name, "Jerome") and
+  Entry.find_by(:phone_number, "123-456-7890"), respectively.
+
+  Add new method to Bloc_Record/lib/bloc_record/selection.rb
+    def method_missing(m, *args, &block)
+      s = m.split('_')[2, m.length - 1].join("_").to_sym
+      find_by(s, args)
+    end
+
+
+*******************************************************************************
+3. Add support for batches:
+
+  - Implement find_each to retrieve a batch of records and then yield each
+  record to a block individually as a model. This will allow code like:
+
+    Contact.find_each do |contact|
+      contact.check_if_naughty_or_nice
+    end
+
+      Add new method to Bloc_Record/lib/bloc_record/selection.rb
+        def find_each(options = {})
+          start = options.start || 0
+          batch_size = options.batch_size || 0
+
+          row = connection.get_first_row <<-SQL
+            SELECT #{columns.join ","} FROM #{table}
+            LIMIT #{batch_size} #{start};
+          SQL
+
+          row.each do |row|
+            yield(rows_to_array(row))
+          end
+        end
+
+  - Support batch_size to specify the number of records to be retrieved in
+  each batch:
+
+    Contact.find_each(start: 2000, batch_size: 2000) do |contact|
+      contact.check_if_naughty_or_nice
+    end
+
+  - Support find_in_batches to yield batches to a block as an array of models:
+
+    Contact.find_in_batches(start: 4000, batch_size: 2000) do |contacts, batch|
+      contacts.each { |contact| contact.check_if_naughty_or_nice }
+    end
+
+      Add new method to Bloc_Record/lib/bloc_record/selection.rb
+        def find_in_batches(options = {})
+          start = options.start || 0
+          batch_size = options.batch_size || 0
+
+          rows = connection.execute <<-SQL
+            SELECT #{columns.join ","} FROM #{table}
+            LIMIT #{batch_size} #{start};
+          SQL
+
+          arr = rows_to_array(rows)
+          yield(arr)
+        end
