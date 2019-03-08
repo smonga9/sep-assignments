@@ -1,17 +1,16 @@
 def fib(n)
-  if n === 0
-    return 0
+  fib_array = []
+  i = 0
+  while i <= n
+    if i <= 1
+      fib_array.push(i)
+    else
+      x = fib_array[i-1] + fib_array[i-2]
+      fib_array.push(x)
+    end
+    i+=1
   end
-
-  fib_0 = 0
-  fib_1 = 1
-
-  for i in 1..(n-1)
-    temp = fib_0
-    fib_0 = fib_1
-    fib_1 = temp + fib_1
-  end
-  return fib_1
+  result = fib_array.empty? ? "No negative numbers" : fib_array.last
 end
 
 
